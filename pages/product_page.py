@@ -13,6 +13,7 @@ class ProductPage(BasePage):
     DECREASE = dt("decrease-quantity")
     ADD_TO_CART = dt("add-to-cart")
     CART_BADGE = dt("cart-quantity")
+    OUT_OF_STOCK = dt("out-of-stock")
     TOAST = (By.CSS_SELECTOR, "#toast-container")
 
     def open_by_id(self, product_id):
@@ -34,6 +35,12 @@ class ProductPage(BasePage):
             self.click(self.INCREASE)
         while self.quantity() > qty:
             self.click(self.DECREASE)
+
+    def can_add_to_cart(self):
+        return self.find(self.ADD_TO_CART).is_enabled()
+
+    def can_change_quantity(self):
+        return self.find(self.QUANTITY).is_enabled()
 
     def add_to_cart(self, qty=1):
         self.set_quantity(qty)

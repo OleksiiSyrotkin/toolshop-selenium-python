@@ -43,7 +43,7 @@ class TestCart:
 
     def test_cart_total(self, driver, api):
         first = api.find_product_by_name("Combination Pliers")
-        second = api.find_product_by_name("Long Nose Pliers")
+        second = api.find_product_by_name("Slip Joint Pliers")
 
         page = ProductPage(driver).open_by_id(first["id"])
         page.add_to_cart(qty=2)
@@ -59,3 +59,13 @@ class TestCart:
         for item in items:
             assert item["line"] == pytest.approx(item["price"] * item["qty"])
         assert cart.total() == pytest.approx(first["price"] * 2 + second["price"])
+
+    def test_out_of_stock_product_cannot_be_added(self, driver, api):
+        product = api.find_product_by_name("Long Nose Pliers")
+        assert not product["in_stock"]
+
+        page = ProductPage(driver).open_by_id(product["id"])
+
+        assert page.text_of(page.OUT_OF_STOCK) == "Out of stock"
+        assert not page.can_add_to_cart()
+        assert not page.can_change_quantity()

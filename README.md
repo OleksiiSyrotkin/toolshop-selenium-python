@@ -13,7 +13,7 @@ Allure report from the latest run on `main`: https://oleksiisyrotkin.github.io/t
 | Login | valid login, unknown user, empty form validation, email format validation, logout |
 | Catalog | search (UI results compared with API), sorting by price and name |
 | Product page | name and price on the page match API data, opening a product from the catalog |
-| Cart | add with quantity, toast message, cart badge, line prices and cart total |
+| Cart | add with quantity, toast message, cart badge, line prices and cart total, out of stock product can't be added |
 | API | products list and pagination, product by id, 404, search, sorting, categories, login, `/users/me`, auth errors, JSON schema validation |
 
 ## Stack
