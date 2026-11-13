@@ -23,7 +23,7 @@ Allure report from the latest run on `main`: https://oleksiisyrotkin.github.io/t
 - pytest, pytest-xdist (parallel run), pytest-rerunfailures
 - requests + jsonschema for API tests
 - Allure for reporting
-- GitHub Actions: API job + UI job in Chrome and Firefox, report published to GitHub Pages
+- GitHub Actions: API tests on every push, Allure report published to GitHub Pages
 
 ## Project structure
 
@@ -106,12 +106,13 @@ These are public demo credentials from the Toolshop site.
 `.github/workflows/tests.yml`:
 
 1. `api` - API tests
-2. `ui` - UI tests in Chrome and Firefox (matrix), 4 workers, one rerun for failed tests
-3. `report` - merges Allure results from all jobs, builds the report and publishes it to GitHub Pages
+2. `report` - builds the Allure report and publishes it to GitHub Pages
+
+UI tests are not run in CI: practicesoftwaretesting.com shows a Cloudflare "Verify you are human" page to GitHub Actions runners, so the browser never gets to the app. UI tests are run locally (`pytest -m ui`).
 
 Runs on push to `main`, on pull requests, manually and every Monday (to notice when the demo site changes).
 
 ## Notes
 
-- Toolshop is a public demo app, sometimes it's slow or down. That's why UI tests have one rerun in CI.
+- Toolshop is a public demo app, sometimes it's slow or down. If UI tests are flaky locally, run them with `--reruns 1`.
 - Demo data is reset from time to time, so tests don't rely on hardcoded product ids.

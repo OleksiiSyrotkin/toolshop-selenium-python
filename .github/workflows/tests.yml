@@ -30,29 +30,9 @@ jobs:
           name: allure-results-api
           path: allure-results
 
-  ui:
-    runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        browser: [chrome, firefox]
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.12"
-          cache: pip
-      - run: pip install -r requirements.txt
-      - run: pytest -m ui --browser=${{ matrix.browser }} --headless -n 4 --reruns 1
-      - uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: allure-results-${{ matrix.browser }}
-          path: allure-results
-
   report:
     if: always() && github.ref == 'refs/heads/main'
-    needs: [api, ui]
+    needs: api
     runs-on: ubuntu-latest
     environment:
       name: github-pages
